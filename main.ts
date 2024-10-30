@@ -1,6 +1,10 @@
 import { createHash } from "crypto";
 import { block_data_interface } from "./interfaces/block_data_interface";
 import { transactions_data_interface } from "./interfaces/transaction_data_interface";
+import {Server,Socket} from "socket.io"
+import { io } from "socket.io-client"
+import http from "http"
+import { socket_server } from "./socket_sys/socket_server";
 
 
 //fake_data
@@ -8,6 +12,16 @@ const other_nodes:string[] = [
     "192.168.11.1:3000",
     "192.168.11.1:3000",
 ]
+
+//ネットワーク設定
+const server = http.createServer()
+let io_server = new Server(server)
+io_server.on("connection",(socket:Socket)=>{
+    socket_server(io_server,socket)
+})
+export let client_sockets:any = other_nodes.map((i:string)=>{
+    return io(i)
+})
 
 //main
 const now_chain:block_data_interface[] = [
@@ -34,20 +48,28 @@ const now_chain:block_data_interface[] = [
     }
 ]
 const transaction_pool:transactions_data_interface[] = []
-const min_nans = 3
+const now_diff = 3
 const nans_char = "0"
+export const max_connection_node = 2
 //functions
 const get_hash = (data:string):string=>{
     const hash = createHash("sha256")
     hash.update(data)
     return hash.digest("hex")
 }
+
+const count_all_diff = (count_chain:block_data_interface[]):number=>{
+        let all_diff:number = 0
+        count_chain.forEach((i:block_data_interface)=>{
+                all_diff+=i.nans_length**now_diff
+        })
+        return all_diff
+}
 const block_chain_proof = (data:block_data_interface[]):boolean=>{
     let {nans,...before_block_data} = data[0]
     let  before_block_nans = data[0].nans
     let flg:boolean = true
     for (let i = 1;now_chain.length>i;i++){
-        if (data[i-1].nans_length<min_nans) break
         const hash_value:string = get_hash(String(before_block_nans)+JSON.stringify(before_block_data))
         if (hash_value !== data[i].before_block_hash || hash_value.slice(0,data[i-1].nans_length) !== nans_char.repeat(data[i-1].nans_length)){
             flg = false
@@ -59,12 +81,12 @@ const block_chain_proof = (data:block_data_interface[]):boolean=>{
     }
     //最後のブロック検証
     const hash_value:string = get_hash(String(before_block_nans)+JSON.stringify(before_block_data))
-    if (hash_value.slice(0,data[data.length-1].nans_length) !== nans_char.repeat(data[data.length-1].nans_length) || data[data.length-1].nans_length<min_nans){
+    if (hash_value.slice(0,data[data.length-1].nans_length) !== nans_char.repeat(data[data.length-1].nans_length)){
         flg = false
     }
     return flg
 }
 //起動時にブロックチェーンの整合性確認
 
-
+console.log(count_all_diff(now_chain))
 console.log(block_chain_proof(now_chain))

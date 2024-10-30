@@ -5,13 +5,16 @@ import {Server,Socket} from "socket.io"
 import { io } from "socket.io-client"
 import http from "http"
 import { socket_server } from "./socket_sys/socket_server";
+import { search_connection_nodes } from "./socket_sys/socket_client";
 
 
 //fake_data
 const other_nodes:string[] = [
-    "192.168.11.1:3000",
-    "192.168.11.1:3000",
+    "localhost:3000",
+    // "192.168.11.1:3000",
 ]
+export const my_ip = "localhost5000"
+export const PORT = 5000
 
 //ネットワーク設定
 const server = http.createServer()
@@ -19,10 +22,11 @@ let io_server = new Server(server)
 io_server.on("connection",(socket:Socket)=>{
     socket_server(io_server,socket)
 })
-export let client_sockets:any = other_nodes.map((i:string)=>{
-    return io(i)
-})
-
+const search_result = search_connection_nodes(other_nodes)
+export let client_sockets:any = search_result?search_result:[]
+export const add_client_sockets = (new_socket:any)=>{
+    client_sockets.push(new_socket)
+}
 //main
 const now_chain:block_data_interface[] = [
     {
@@ -90,3 +94,8 @@ const block_chain_proof = (data:block_data_interface[]):boolean=>{
 
 console.log(count_all_diff(now_chain))
 console.log(block_chain_proof(now_chain))
+
+server.listen(PORT,()=>{
+    console.log(`This tsubame node is running!`)
+    console.log(`Now using ip:${my_ip}`)
+})

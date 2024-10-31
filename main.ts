@@ -11,10 +11,13 @@ import { search_connection_nodes } from "./socket_sys/socket_client";
 //fake_data
 const other_nodes:string[] = [
     "localhost:3000",
+    "localhost:5000",
+    "localhost:6000",
+    // "localhost:9000"
     // "192.168.11.1:3000",
 ]
-export const my_ip = "localhost5000"
-export const PORT = 5000
+export const my_ip = "localhost:8000"
+export const PORT = 8000
 
 //ネットワーク設定
 const server = http.createServer()
@@ -22,8 +25,8 @@ let io_server = new Server(server)
 io_server.on("connection",(socket:Socket)=>{
     socket_server(io_server,socket)
 })
-const search_result = search_connection_nodes(other_nodes)
-export let client_sockets:any = search_result?search_result:[]
+export let client_sockets:any = []
+search_connection_nodes(other_nodes)
 export const add_client_sockets = (new_socket:any)=>{
     client_sockets.push(new_socket)
 }

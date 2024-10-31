@@ -6,7 +6,6 @@ import {io} from "socket.io-client"
 
 export const socket_server = (io_server:any,socket:any)=>{
     socket.on("get_now_connection_nodes_request",(data:socket_send_data_interface)=>{
-        console.log("tset")
         io_server.to(socket.id).emit("get_now_connection_nodes_response",convert_socket_send_type({
             length:client_sockets.length,
             max:max_connection_node
@@ -17,7 +16,8 @@ export const socket_server = (io_server:any,socket:any)=>{
             const new_socket:any = io(`http://${res.data.ip}`)
             new_socket.on("connect",()=>{
                 add_client_sockets(new_socket)
-                console.log(`done:${res.data.ip}`)
+                console.log(`done2:${res.data.ip}`)
+                console.log(`now connection node:${client_sockets.length}`)
             })
         }
     })

@@ -31,7 +31,7 @@ export const add_client_sockets = (new_socket:any)=>{
     client_sockets.push(new_socket)
 }
 //main
-const now_chain:block_data_interface[] = [
+export const now_chain:block_data_interface[] = [
     {
         block_num:0,
         nans_length:3,

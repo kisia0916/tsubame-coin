@@ -1,8 +1,8 @@
-const befo =     {
+const befo = {
     block_num:2,
-    nans_length:3,
+    nance_length:3,
     transactions:[],
-    before_block_hash:"0000ed44c3d574a33e8368db131bfb519818e71aab11553c4a73420c5b67e744",
+    before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
 }
 const text = JSON.stringify(befo)
 

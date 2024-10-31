@@ -1,6 +1,6 @@
 import { Socket } from "socket.io";
 import { socket_send_data_interface } from "../interfaces/socket_send_data_interface";
-import { convert_socket_send_type } from "../functions/convert_type";
+import { convert_socket_send_type } from "../functions/system/convert_type";
 import { add_client_sockets, client_sockets, max_connection_node, now_chain } from "../main";
 import {io} from "socket.io-client"
 
@@ -22,7 +22,7 @@ export const socket_server = (io_server:any,socket:any)=>{
         }
     })
     socket.on("get_target_block_request",(req:{data:{block_num:number}})=>{
-        if ( req.data.block_num <= now_chain.length){
+        if (req.data.block_num >= 0 && req.data.block_num <= now_chain.length){
             io_server.to(socket.id).emit("get_target_block_response",convert_socket_send_type(now_chain[req.data.block_num-1]))
         }else{
             io_server.to(socket.id).emit("get_target_block_response",convert_socket_send_type(undefined))

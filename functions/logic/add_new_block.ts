@@ -1,6 +1,6 @@
 import { block_data_interface } from "../../interfaces/block_data_interface";
 import { chain_data_interface } from "../../interfaces/chain_data_interface";
-import { add_chain, add_new_chain_branch, count_all_diff, get_hash, now_chain } from "../../main";
+import { add_chain, add_new_chain_branch, get_hash, now_chain } from "../../main";
 
 export const add_new_block = (chain_id:string,index:number,data:block_data_interface,block_stream_flg:boolean)=>{
     console.log(chain_id)

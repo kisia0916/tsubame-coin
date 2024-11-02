@@ -2,7 +2,7 @@ import { createHash } from "crypto";
 import { block_data_interface } from "./interfaces/block_data_interface";
 import { transactions_data_interface } from "./interfaces/transaction_data_interface";
 import {Server,Socket} from "socket.io"
-import { io } from "socket.io-client"
+import { io, NodeWebSocket } from "socket.io-client"
 import { v4 as uuidv4 } from 'uuid';
 import http from "http"
 import { socket_server } from "./socket_sys/socket_server";
@@ -86,6 +86,7 @@ const transaction_pool:transactions_data_interface[] = []
 export const now_diff = 3
 export const nance_char = "0"
 export const max_connection_node = 2
+export const delete_works_difference = (now_diff**2)*1
 //functions
 export const get_hash = (data:string):string=>{
     const hash = createHash("sha256")

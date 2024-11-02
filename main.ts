@@ -3,10 +3,12 @@ import { block_data_interface } from "./interfaces/block_data_interface";
 import { transactions_data_interface } from "./interfaces/transaction_data_interface";
 import {Server,Socket} from "socket.io"
 import { io } from "socket.io-client"
+import { v4 as uuidv4 } from 'uuid';
 import http from "http"
 import { socket_server } from "./socket_sys/socket_server";
 import { search_connection_nodes } from "./socket_sys/socket_client";
 import { chain_data_interface } from "./interfaces/chain_data_interface";
+import { add_new_block } from "./functions/logic/add_new_block";
 
 
 //fake_data
@@ -73,7 +75,7 @@ export let now_chain:chain_data_interface[] = [
                 transactions:[],
                 before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
                 nance:2832,
-            }
+            },
         ],
     },
 ]
@@ -93,11 +95,18 @@ export const add_chain = (chain_id:string,data:block_data_interface)=>{
     if (target_chain_index !== -1){
         now_chain[target_chain_index].data.push(data)
     }
+    console.log(now_chain[target_chain_index])
 }
-export const add_new_chain_branch = (data:block_data_interface)=>{
-    // now_chain.push([data])
+export const add_new_chain_branch = (root_block:{chain_id:string,block_num:number},data:block_data_interface)=>{
+    now_chain.push({
+        chain_id:uuidv4(),
+        root_block:{
+            chain_id:root_block.chain_id,
+            block_num:root_block.block_num
+        },
+        data:[data]
+    })
 }
-
 
 export const count_all_diff = (chain_id:string,index:number):number=>{
         let all_diff:number = 0
@@ -116,6 +125,8 @@ export const count_all_diff = (chain_id:string,index:number):number=>{
         return all_diff
 }
 const block_chain_proof = (chain_id:string,last_hash:string,index:number):boolean=>{
+    //  ブロックの番号が連番になっているか追加する処理を書く
+    //.............
     const target_chain:chain_data_interface|undefined = now_chain.find((i:chain_data_interface)=>i.chain_id === chain_id)
     if (target_chain){
         const start_index = index >= 0?index:target_chain.data.length-1
@@ -158,4 +169,11 @@ server.listen(PORT,()=>{
     }else{
         console.log("Now chain status:\x1b[32mNormal\x1b[0m")
     }
+    add_new_block("4cd3d5cd-8d33-457b-8313-2cc853d4f8ac",-1,{
+        block_num:3,
+        nance_length:3,
+        transactions:[],
+        before_block_hash:"000134dae6ce42451ac0cf2e657199857995f4e4c9f9b707691b6850f5285f83",
+        nance:361
+    },false)
 })

@@ -1,6 +1,9 @@
 export interface transactions_data_interface {
-    sender:string,
-    receiver:string,
-    coin_num:number,
-    commission:number
+    block_num:number,
+    transaction_num:number,
+    input:string,
+    output:string,
+    amount:number,
+    fee:number,//手数料
+    signature:string,
 }

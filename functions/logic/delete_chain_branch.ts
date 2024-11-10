@@ -11,8 +11,8 @@ export const delete_chain_branch = (chain_id:string)=>{
             //ルートチェーンに結合
             const other_branch:chain_data_interface = now_chain[other_branch_index]
             delete_blocks(chain_id,Number(other_branch.root_block?.block_num)+1,target_chain.data.length-(Number(other_branch.root_block?.block_num)+1))
-            unit_chain(now_chain[target_chain_index],other_branch)
             delete_chain(other_branch.chain_id)
+            unit_chain(now_chain[target_chain_index],other_branch)
         }else{
             delete_chain(chain_id)
         }

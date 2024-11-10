@@ -3,6 +3,8 @@ import { socket_send_data_interface } from "../interfaces/socket_send_data_inter
 import { convert_socket_send_type } from "../functions/system/convert_type";
 import { add_client_sockets, client_sockets, max_connection_node, now_chain } from "../main";
 import {io} from "socket.io-client"
+import { get_now_main_chain } from "../functions/logic/count_all_diff";
+import { chain_data_interface } from "../interfaces/chain_data_interface";
 
 export const socket_server = (io_server:any,socket:any)=>{
     socket.on("get_now_connection_nodes_request",(data:socket_send_data_interface)=>{
@@ -26,6 +28,30 @@ export const socket_server = (io_server:any,socket:any)=>{
             io_server.to(socket.id).emit("get_target_block_response",convert_socket_send_type(now_chain[req.data.block_num-1]))
         }else{
             io_server.to(socket.id).emit("get_target_block_response",convert_socket_send_type(undefined))
+        }
+    })
+    socket.on("get_max_work_request",(req:any)=>{
+        io_server.to(socket.id).emit("get_max_work_response",get_now_main_chain())
+    })
+    socket.on("sync_block_request",(req:{before_chain_id:string,before_block_num:number})=>{
+        if (req.before_chain_id === ""){
+            const first_branch = now_chain.find((i:chain_data_interface)=>i.root_block === undefined)
+            if (first_branch){
+                const {data,...chain_head} = first_branch
+                io_server.to(socket.id).emit("sync_block_response",{type:"chain_data",chain_data:chain_head,block_data:undefined})
+            }else{
+                io_server.to(socket.id).emit("sync_block_response",{type:"chain_data",chain_data:undefined,block_data:undefined})
+            }
+        }else{
+            const target_chain_index = now_chain.findIndex((i:chain_data_interface)=>i.chain_id === req.before_chain_id)
+            if (target_chain_index !== -1){
+                if (req.before_block_num === -1){
+                    const {data,...chain_head} = now_chain[target_chain_index]
+                    io_server.to(socket.id).emit("sync_block_response",{type:"block_data",chain_data:chain_head,block_data:now_chain[target_chain_index].data[0]})
+                }else{
+
+                }
+            }
         }
     })
 }

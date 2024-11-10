@@ -17,3 +17,15 @@ export const count_all_diff = (chain_id:string,index:number):number=>{
     }
     return all_diff
 }
+export const get_now_main_chain = ():{chain_id:string,max_work:number}=>{
+    let max_work:number = 0
+    let main_chain_id:string = ""
+    now_chain.forEach((i:chain_data_interface)=>{
+        const target_chain_diff = count_all_diff(i.chain_id,-1)
+        if (target_chain_diff > max_work){
+            max_work = target_chain_diff
+            main_chain_id = i.chain_id
+        }
+    })
+    return {chain_id:main_chain_id,max_work:max_work}
+}

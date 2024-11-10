@@ -1,6 +1,6 @@
 import {io} from "socket.io-client"
 import { socket_send_data_interface } from "../interfaces/socket_send_data_interface"
-import { add_client_sockets, max_connection_node, my_ip } from "../main"
+import { add_client_sockets, client_sockets, max_connection_node, my_ip } from "../main"
 
 let connected_num:number = 0
 let connected_list = []
@@ -29,4 +29,7 @@ export const search_connection_nodes = (node_list:string[]):any=>{
             search_connection_nodes(node_list)
         }
     })
+}
+export const send_data_from_client = (client_socket:any,header:string,data:any)=>{
+    client_socket.emit(header,data)
 }

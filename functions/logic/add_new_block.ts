@@ -1,7 +1,7 @@
 import { block_data_interface } from "../../interfaces/block_data_interface";
 import { chain_data_interface } from "../../interfaces/chain_data_interface";
 import { transactions_data_interface } from "../../interfaces/transaction_data_interface";
-import { add_block_chain, add_new_chain_branch, delete_works_difference, get_hash, now_chain } from "../../main";
+import { add_block_chain, add_new_chain_branch, delete_works_difference, get_hash, nance_char, now_chain } from "../../main";
 import { check_transaction } from "./check_transaction";
 import { count_all_diff } from "./count_all_diff";
 import { delete_chain_branch } from "./delete_chain_branch";
@@ -27,7 +27,14 @@ export const add_new_block = (chain_id:string,data:block_data_interface,block_st
             const target_block_index = data.block_num > target_chain.data.length-1?target_chain.data.length-1:data.block_num
             const {nance,...before_block_head} = now_chain[target_chain_index].data[target_block_index]
             const before_block_head_hash_value = get_hash(String(nance)+JSON.stringify(before_block_head))
+            //追加するブロック自体の有効性の確認
             if (before_block_head_hash_value === data.before_block_hash){
+                const {nance,...add_block_head} = data
+                const add_block_head_hash_value = get_hash(String(nance)+JSON.stringify(add_block_head))
+                console.log(add_block_head)
+                if (add_block_head_hash_value.slice(0,data.nance_length) !== nance_char.repeat(data.nance_length)){
+                    return
+                }
                 if (data.block_num > target_chain.data.length-1){
                     add_block_chain(chain_id,data)
                 }else{
@@ -40,6 +47,12 @@ export const add_new_block = (chain_id:string,data:block_data_interface,block_st
                 return
             }
         }else{
+            const {nance,...add_block_head} = data
+            const add_block_head_hash_value = get_hash(String(nance)+JSON.stringify(add_block_head))
+            console.log(add_block_head)
+            if (add_block_head_hash_value.slice(0,data.nance_length) !== nance_char.repeat(data.nance_length)){
+                return
+            }
             add_block_chain(chain_id,data)
         }
         //仕事量が最大のチェーンと比較して一定量以下のチェーンを削除

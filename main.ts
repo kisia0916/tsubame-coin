@@ -17,14 +17,14 @@ dotenv.config()
 
 //fake_data
 const other_nodes:string[] = [
-    // "localhost:3000",
+    "localhost:3000",
     // "localhost:5000",
     // "localhost:6000",
     // "localhost:9000"
     // "192.168.11.1:3000",
-    "localhost:8000"
+    // "localhost:8000"
 ]
-export const PORT = 3000
+export const PORT = 8000
 export const my_ip = `localhost:${PORT}`
 export const wait_connection_time = 3000
 //ネットワーク設定
@@ -39,49 +39,49 @@ export const add_client_sockets = (new_socket:any)=>{
 }
 //main
 export let now_chain:chain_data_interface[] = [
-    {
-        chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
-        root_block:undefined,
-        data:[
-            {
-                block_num:0,
-                nance_length:3,
-                transactions:[],
-                before_block_hash:"",
-                nance:664,
-            },
-            {
-                block_num:1,
-                nance_length:3,
-                transactions:[],
-                before_block_hash:"0008f6f4f6d17012b4e6b74f0f37d2c1d587ed182be6baafd85cd2a225e33c59",
-                nance:474,
-            },
-            {
-                block_num:2,
-                nance_length:3,
-                transactions:[],
-                before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
-                nance:2832,
-            },
-        ],
-    },
-    {
-        chain_id:"4cd3d5cd-8d33-457b-8313-2cc853d4f8ac",
-        root_block:{
-            chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
-            block_num:1
-        },
-        data:[
-            {
-                block_num:2,
-                nance_length:3,
-                transactions:[],
-                before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
-                nance:2832,
-            },
-        ],
-    },
+    // {
+    //     chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
+    //     root_block:undefined,
+    //     data:[
+    //         {
+    //             block_num:0,
+    //             nance_length:3,
+    //             transactions:[],
+    //             before_block_hash:"",
+    //             nance:664,
+    //         },
+    //         {
+    //             block_num:1,
+    //             nance_length:3,
+    //             transactions:[],
+    //             before_block_hash:"0008f6f4f6d17012b4e6b74f0f37d2c1d587ed182be6baafd85cd2a225e33c59",
+    //             nance:474,
+    //         },
+    //         {
+    //             block_num:2,
+    //             nance_length:3,
+    //             transactions:[],
+    //             before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
+    //             nance:2832,
+    //         },
+    //     ],
+    // },
+    // {
+    //     chain_id:"4cd3d5cd-8d33-457b-8313-2cc853d4f8ac",
+    //     root_block:{
+    //         chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
+    //         block_num:1
+    //     },
+    //     data:[
+    //         {
+    //             block_num:2,
+    //             nance_length:3,
+    //             transactions:[],
+    //             before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
+    //             nance:2832,
+    //         },
+    //     ],
+    // },
 ]
 const transaction_pool:transactions_data_interface[] = []
 export const now_diff = 3

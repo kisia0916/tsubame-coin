@@ -45,11 +45,21 @@ export const socket_server = (io_server:any,socket:any)=>{
         }else{
             const target_chain_index = now_chain.findIndex((i:chain_data_interface)=>i.chain_id === req.before_chain_id)
             if (target_chain_index !== -1){
+                const {data,...chain_head} = now_chain[target_chain_index]
                 if (req.before_block_num === -1){
-                    const {data,...chain_head} = now_chain[target_chain_index]
                     io_server.to(socket.id).emit("sync_block_response",{type:"block_data",chain_data:chain_head,block_data:now_chain[target_chain_index].data[0]})
+                }else if (req.before_block_num < now_chain[target_chain_index].data[now_chain[target_chain_index].data.length-1].block_num){
+                    io_server.to(socket.id).emit("sync_block_response",{type:"block_data",chain_data:chain_head,block_data:now_chain[target_chain_index].data[req.before_block_num+1]})
                 }else{
-
+                    //次のチェーンデータを送信
+                    if (target_chain_index < now_chain.length-1){
+                        const next_chain_data = now_chain[target_chain_index+1]
+                        const {data,...next_chain_head} = next_chain_data
+                        io_server.to(socket.id).emit("sync_block_response",{type:"chain_data",chain_data:next_chain_head,block_data:undefined})
+                    }else{
+                        io_server.to(socket.id).emit("sync_blocks_done",{})
+                        console.log("\x1b[32mSync blocks done!\x1b[0m")
+                    }
                 }
             }
         }

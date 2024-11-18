@@ -12,6 +12,8 @@ import { add_new_block } from "./functions/logic/add_new_block";
 import { count_all_diff } from "./functions/logic/count_all_diff";
 import { check_block_chain_proof } from "./functions/logic/check_block_proof";
 import { sync_blocks } from "./functions/logic/sync_blocks";
+import dotenv from "dotenv"
+dotenv.config()
 
 //fake_data
 const other_nodes:string[] = [
@@ -20,9 +22,9 @@ const other_nodes:string[] = [
     // "localhost:6000",
     // "localhost:9000"
     // "192.168.11.1:3000",
-    // "localhost:8000"
+    "localhost:8000"
 ]
-export const PORT = 8000
+export const PORT = 3000
 export const my_ip = `localhost:${PORT}`
 export const wait_connection_time = 3000
 //ネットワーク設定
@@ -88,6 +90,9 @@ export const max_connection_node = 2
 export const delete_works_difference = (now_diff**2)*1
 export let now_longest_chain:string = ""
 //functions
+export const init_chain = ()=>{
+    now_chain = []
+}
 export const get_hash = (data:string):string=>{
     const hash = createHash("sha256")
     hash.update(data)
@@ -102,9 +107,11 @@ export const add_block_chain = (chain_id:string,data:block_data_interface)=>{
     console.log(now_chain[target_chain_index])
 }
 export const create_new_chain = (data:chain_data_interface)=>{
-    if (data.root_block === undefined && now_chain.find((i:chain_data_interface)=>i.root_block?.chain_id === data.chain_id)){
-        now_chain.push(data)
-    }
+    now_chain.push({
+        chain_id:data.chain_id,
+        data:data.data,
+        root_block:data.root_block
+    })
 }
 
 export const unit_chain = (root:chain_data_interface,branch:chain_data_interface)=>{
@@ -164,25 +171,25 @@ server.listen(PORT,()=>{
     }
     search_connection_nodes(other_nodes)
     setTimeout(()=>{
-        console.log("同期を開始します")
+        console.log("Start syncing.....")
         sync_blocks(client_sockets)
     },wait_connection_time)
     //ほかのノードとブロックを同期
-    add_new_block("9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",{
-        block_num:3,
-        nance_length:3,
-        transactions:[
-            {
-                block_num:3,
-                transaction_num:0,
-                input:``,
-                output:"hoge",
-                amount:600,
-                fee:10,
-                signature:"J9jy8oQ8ulxdkPEcAsmEfuSkg81uA2zd/tKeQAnVoBMCf382aoUnoV9XHmNCl40N0fV1mEZ3Y4p0x22zv3/ep5WzLsy12cap8lDRj6amwxU7f8it33Fxde1wvGnx7eIXxUCasIqhFVq1Tj1R1f+ymKSgEXZhwOy9iDY3VubgHxxHBV8zb202kLWYoEZSMgujm1hTY/qflQlNmqRlnoxw/oc5UQWPvkd75F8e0znT5N3HA6DJg9bor7ANUsk94adPS5pwuEmU7fqg1PgI12AlQUd6q5rhPM+JyBJJ3xBWtQMUclFTWByGMwufqacyyZ1BPxJph+x9kVQwCbwOaHs9jbcuWSRmqY3e9LJzzEIni4EvNFGDgPz5bIt2hApgZ9XDwcaSMOI5pfjWYBzcqEuJxeqjM2iJ5VJzCH3MQoksSkqCItiVG3wd8uiCbyOfQC0vqBXm7XzvpHjtQ57V8A+52GmiBiehjYqlImeKnIcZjLgqP4i1XQRVU1zleust/uib"
-            }
-        ],
-        before_block_hash:"000134dae6ce42451ac0cf2e657199857995f4e4c9f9b707691b6850f5285f83",
-        nance:740
-    },false)
+    // add_new_block("9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",{
+    //     block_num:3,
+    //     nance_length:3,
+    //     transactions:[
+    //         {
+    //             block_num:3,
+    //             transaction_num:0,
+    //             input:"LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJpZ0tDQVlFQTN3UXF0R2hPK2NPaFlZRVg4SnlQS0FpaXg0YU15NEZEM2dld0Nua0JyK0ZEOE9CbXdmMzEKdEcraHBqbUVHMllrdHpaMGJtTXFZc3NVNDBjOU13L2laK3MxTzRjUVpQRkExbjBXazZYOUtlUzdwQThyU0tWdApLUmR6VVhmK0RTK1o1VHhSRi8wYitCWS9rcmg5RGQ2a1h5YlFQM2dBdEpROWl0cHRUVGlsOFRpSnZRMy9rTDh0CmlqVm51ZStlMkR0SkRhSloyWmFkemwvWXluN3pZeEQrSUxSSmpnR3BLaTZ5WXpuMEdTbXlJQmJZMDVQNzVUVkQKbkdKZHpYb2RCb29YUkUycE0zTzR5UXJqY2lnaUhpOTN6NzF5VE9aOWNhQy9sN3QwUnVkN0gwSzlGa0FjQTI5NwpjZmh4NXIvNnUyRzh0YndBVTZWUTZOeXpMU1ladnJFRTRvemhRN044ZWdRQitXajZwWENRaXhpcmM3NFljYmp4CjdKbndNeHdoN0Irc1ZHMXNJRVo0OENIOVBjVEZGb1RnU3E0d2k0R09CbTRJZVpCc2d0WjA0QzhpRXNaamRBbVAKWFNPeVZURklBSUJyaGg2eU9oYm11Ym5TWHpwVDlVOTNaY2xSZUJwYkFNa3R6RUh4K2c1dmNXSkNpMGdUTWl6eQpGamEyQ012S0NETmhBZ01CQUFFPQotLS0tLUVORCBSU0EgUFVCTElDIEtFWS0tLS0t",
+    //             output:"hoge",
+    //             amount:800,
+    //             fee:10,
+    //             signature:"vUrrQBX530/3GfXYVO8mCpcV085J/FwN0Cznb0h6qsO3JYRyCqA4viamJGTGTa/ZgTEjziFbpgIEOclHf1tmYalkYurNW6h2mU3P1QDm8QYIraS9kNcmEAD7t8ymLlIo0OzD+sDF7S5JrE0VdQD0Oc7I6K/sUUzpFcPtP9RbxfeW9pYrz8JIGfkN4CfofUpf05iCs5E36BQxRaf6jKaib3Etme/+pnyq4yWbFbbuG4v2mFcIXlvIGqoE91wCr/wPw9xGLJuroaZpT6Dm3a1PLSYiSyanwWqwfJm0l2vJku5OG9fFWobOXuW0XOLqino8lQKMtXUn+pBWgfljdKUoP1Rmv6x2JShQrOmWTiqT/WBIHVT+ZDrxNekrKPPR4ifdRUlo7cfbesTykT08f7LwOX8EqJrV/iegVQgtiMStrGA59n4ux5eBSvG+Q338T2Tp3SF2BuhEZcplDYP4Yd8WzTAMx5u0/DV4Mq0p+kQffiOxmLLCMax8FM/JYQzqwZuU"
+    //         }
+    //     ],
+    //     before_block_hash:"000134dae6ce42451ac0cf2e657199857995f4e4c9f9b707691b6850f5285f83",
+    //     nance:3377
+    // },false)
 })

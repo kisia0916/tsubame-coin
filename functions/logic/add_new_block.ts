@@ -23,20 +23,24 @@ export const add_new_block = (chain_id:string,data:block_data_interface,block_st
         }
         console.log("all transaction is true")
         //以下ブロック追加ロジック
-        const target_block_index = data.block_num > target_chain.data.length-1?target_chain.data.length-1:data.block_num
-        const {nance,...before_block_head} = now_chain[target_chain_index].data[target_block_index]
-        const before_block_head_hash_value = get_hash(String(nance)+JSON.stringify(before_block_head))
-        if (before_block_head_hash_value === data.before_block_hash){
-            if (data.block_num > target_chain.data.length-1){
-                add_block_chain(chain_id,data)
+        if (now_chain[target_chain_index].data.length>0){
+            const target_block_index = data.block_num > target_chain.data.length-1?target_chain.data.length-1:data.block_num
+            const {nance,...before_block_head} = now_chain[target_chain_index].data[target_block_index]
+            const before_block_head_hash_value = get_hash(String(nance)+JSON.stringify(before_block_head))
+            if (before_block_head_hash_value === data.before_block_hash){
+                if (data.block_num > target_chain.data.length-1){
+                    add_block_chain(chain_id,data)
+                }else{
+                    add_new_chain_branch({
+                        chain_id:now_chain[target_block_index].chain_id,
+                        block_num:data.block_num-1
+                    },data)
+                }
             }else{
-                add_new_chain_branch({
-                    chain_id:now_chain[target_block_index].chain_id,
-                    block_num:data.block_num-1
-                },data)
+                return
             }
         }else{
-            return
+            add_block_chain(chain_id,data)
         }
         //仕事量が最大のチェーンと比較して一定量以下のチェーンを削除
         let max_works:number = 0

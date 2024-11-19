@@ -13,6 +13,12 @@ import { count_all_diff } from "./functions/logic/count_all_diff";
 import { check_block_chain_proof } from "./functions/logic/check_block_proof";
 import { sync_blocks } from "./functions/logic/sync_blocks";
 import dotenv from "dotenv"
+
+//web api
+import express from "express"
+import get_block_data from "./web_api/block_data_api"
+const app:express.Express = express()
+
 dotenv.config()
 
 //fake_data
@@ -39,33 +45,33 @@ export const add_client_sockets = (new_socket:any)=>{
 }
 //main
 export let now_chain:chain_data_interface[] = [
-    // {
-    //     chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
-    //     root_block:undefined,
-    //     data:[
-    //         {
-    //             block_num:0,
-    //             nance_length:3,
-    //             transactions:[],
-    //             before_block_hash:"",
-    //             nance:664,
-    //         },
-    //         {
-    //             block_num:1,
-    //             nance_length:3,
-    //             transactions:[],
-    //             before_block_hash:"0008f6f4f6d17012b4e6b74f0f37d2c1d587ed182be6baafd85cd2a225e33c59",
-    //             nance:474,
-    //         },
-    //         {
-    //             block_num:2,
-    //             nance_length:3,
-    //             transactions:[],
-    //             before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
-    //             nance:2832,
-    //         },
-    //     ],
-    // },
+    {
+        chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
+        root_block:undefined,
+        data:[
+            {
+                block_num:0,
+                nance_length:3,
+                transactions:[],
+                before_block_hash:"",
+                nance:664,
+            },
+            {
+                block_num:1,
+                nance_length:3,
+                transactions:[],
+                before_block_hash:"0008f6f4f6d17012b4e6b74f0f37d2c1d587ed182be6baafd85cd2a225e33c59",
+                nance:474,
+            },
+            {
+                block_num:2,
+                nance_length:3,
+                transactions:[],
+                before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
+                nance:2832,
+            },
+        ],
+    },
     // {
     //     chain_id:"4cd3d5cd-8d33-457b-8313-2cc853d4f8ac",
     //     root_block:{
@@ -192,4 +198,12 @@ server.listen(PORT,()=>{
     //     before_block_hash:"000134dae6ce42451ac0cf2e657199857995f4e4c9f9b707691b6850f5285f83",
     //     nance:3377
     // },false)
+})
+
+
+app.use(express.json())
+app.use("/data",get_block_data)
+
+app.listen(3001,()=>{
+    console.log("api server is running")
 })

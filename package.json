@@ -16,11 +16,15 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
     "http": "^0.0.1-security",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "uuid": "^11.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0"
   }
 }

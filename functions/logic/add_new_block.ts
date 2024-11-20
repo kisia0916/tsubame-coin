@@ -4,6 +4,7 @@ import { transactions_data_interface } from "../../interfaces/transaction_data_i
 import { add_block_chain, add_new_chain_branch, delete_works_difference, get_hash, nance_char, now_chain } from "../../main";
 import { check_transaction } from "./check_transaction";
 import { count_all_diff } from "./count_all_diff";
+import { count_token } from "./count_token";
 import { delete_chain_branch } from "./delete_chain_branch";
 
 export const add_new_block = (chain_id:string,data:block_data_interface,block_stream_flg:boolean)=>{
@@ -15,10 +16,17 @@ export const add_new_block = (chain_id:string,data:block_data_interface,block_st
         for (let m:number = 0;data.transactions.length>m;m++){
             const {signature,...transaction_data} = data.transactions[m]
             const transaction_hash_value = get_hash(JSON.stringify(transaction_data))
-            const is_true_transaction = check_transaction(transaction_data.input,transaction_hash_value,signature)
+            const is_true_transaction = check_transaction(transaction_data.from,transaction_hash_value,signature)
             if (transaction_data.block_num !== data.block_num || transaction_data.transaction_num !== m || is_true_transaction === false){
                 console.log("verify error")
                 return 0
+            }else{
+                const rest_token = count_token(data.transactions[m].from)
+                //UTXOを確認
+                if (rest_token < data.transactions[m].fee){
+                    console.log("verify error")
+                    return 0
+                }
             }
         }
         console.log("all transaction is true")

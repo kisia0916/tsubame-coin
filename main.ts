@@ -89,7 +89,7 @@ export let now_chain:chain_data_interface[] = [
     //     ],
     // },
 ]
-const transaction_pool:transactions_data_interface[] = []
+export let transaction_pool:transactions_data_interface[] = []
 export const now_diff = 3
 export const nance_char = "0"
 export const max_connection_node = 2
@@ -161,6 +161,9 @@ export const add_new_chain_branch = (root_block:{chain_id:string,block_num:numbe
         },
         data:[data]
     })
+}
+export const add_transaction = (data:transactions_data_interface)=>{
+    transaction_pool.push(data)
 }
 
 //起動時にブロックチェーンの整合性確認

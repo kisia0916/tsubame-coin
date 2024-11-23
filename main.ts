@@ -72,22 +72,6 @@ export let now_chain:chain_data_interface[] = [
             },
         ],
     },
-    // {
-    //     chain_id:"4cd3d5cd-8d33-457b-8313-2cc853d4f8ac",
-    //     root_block:{
-    //         chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
-    //         block_num:1
-    //     },
-    //     data:[
-    //         {
-    //             block_num:2,
-    //             nance_length:3,
-    //             transactions:[],
-    //             before_block_hash:"0007ec78d91586008adfd8f14b761cd07106d8a870974afb025638d454f055fa",
-    //             nance:2832,
-    //         },
-    //     ],
-    // },
 ]
 export let transaction_pool:transactions_data_interface[] = []
 export const now_diff = 3

@@ -8,7 +8,8 @@
     "start": "ts-node main.ts",
     "hash": "ts-node search_nans.ts",
     "sign": "ts-node gen_degital_sign.ts",
-    "base64": "ts-node test.ts"
+    "base64": "ts-node test.ts",
+    "address":"ts-node gen_tsubame_address.ts"
   },
   "keywords": [],
   "author": "",

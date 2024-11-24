@@ -1,10 +1,10 @@
 import express from "express";
 import { get_now_main_chain } from "../functions/logic/count_all_diff";
-import { get_hash, now_chain, now_diff } from "../main";
+import { block_transaction_capacity, get_hash, now_chain, now_diff, transaction_pool } from "../main";
 import { add_new_block } from "../functions/logic/add_new_block";
 const router = express.Router()
 
-router.get("/get-mining-target",async(req:any,res:any)=>{
+router.get("/get_mining_target",async(req:any,res:any)=>{
     try{
         const now_main_chain = get_now_main_chain()
         const target_chain = now_chain.find((i)=>i.chain_id === now_main_chain.chain_id)
@@ -12,12 +12,18 @@ router.get("/get-mining-target",async(req:any,res:any)=>{
             const before_block = target_chain.data[target_chain.data.length-1]
             const {nance,...before_block_head} = before_block
             const before_block_hash = get_hash(String(nance)+JSON.stringify(before_block_head))
-            return res.status(200).json({data:{
+            //ブロックに追加するトランザクションを選択
+            transaction_pool.sort((a,b)=>b.value-a.value)
+            const target_transactions = transaction_pool.slice(0,block_transaction_capacity)
+            const res_data = {
                 block_num:before_block.block_num+1,
                 nance_length:now_diff,
-                transactions:[],
+                transactions:target_transactions,
                 before_block_hash:before_block_hash
-            }})
+            }
+            res.setHeader("Content-Disposition",'attachment; filename="next_block.json"')
+            res.setHeader("Content-Type",'application/json')
+            res.send(JSON.stringify(res_data))
         }else{
             return res.status(404).json({error:"target_chain_not_found"})
         }

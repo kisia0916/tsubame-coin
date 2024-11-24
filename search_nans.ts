@@ -1,18 +1,20 @@
+import dotenv from "dotenv"
+dotenv.config()
 const befo = {
-    block_num:3,
+    block_num:0,
     nance_length:3,
     transactions:[
         {
-            block_num:3,
-            transaction_num:0,
-            input:"LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JSUJpZ0tDQVlFQTN3UXF0R2hPK2NPaFlZRVg4SnlQS0FpaXg0YU15NEZEM2dld0Nua0JyK0ZEOE9CbXdmMzEKdEcraHBqbUVHMllrdHpaMGJtTXFZc3NVNDBjOU13L2laK3MxTzRjUVpQRkExbjBXazZYOUtlUzdwQThyU0tWdApLUmR6VVhmK0RTK1o1VHhSRi8wYitCWS9rcmg5RGQ2a1h5YlFQM2dBdEpROWl0cHRUVGlsOFRpSnZRMy9rTDh0CmlqVm51ZStlMkR0SkRhSloyWmFkemwvWXluN3pZeEQrSUxSSmpnR3BLaTZ5WXpuMEdTbXlJQmJZMDVQNzVUVkQKbkdKZHpYb2RCb29YUkUycE0zTzR5UXJqY2lnaUhpOTN6NzF5VE9aOWNhQy9sN3QwUnVkN0gwSzlGa0FjQTI5NwpjZmh4NXIvNnUyRzh0YndBVTZWUTZOeXpMU1ladnJFRTRvemhRN044ZWdRQitXajZwWENRaXhpcmM3NFljYmp4CjdKbndNeHdoN0Irc1ZHMXNJRVo0OENIOVBjVEZGb1RnU3E0d2k0R09CbTRJZVpCc2d0WjA0QzhpRXNaamRBbVAKWFNPeVZURklBSUJyaGg2eU9oYm11Ym5TWHpwVDlVOTNaY2xSZUJwYkFNa3R6RUh4K2c1dmNXSkNpMGdUTWl6eQpGamEyQ012S0NETmhBZ01CQUFFPQotLS0tLUVORCBSU0EgUFVCTElDIEtFWS0tLS0t",
-            output:"hoge",
-            amount:800,
-            fee:10,
-            signature:"vUrrQBX530/3GfXYVO8mCpcV085J/FwN0Cznb0h6qsO3JYRyCqA4viamJGTGTa/ZgTEjziFbpgIEOclHf1tmYalkYurNW6h2mU3P1QDm8QYIraS9kNcmEAD7t8ymLlIo0OzD+sDF7S5JrE0VdQD0Oc7I6K/sUUzpFcPtP9RbxfeW9pYrz8JIGfkN4CfofUpf05iCs5E36BQxRaf6jKaib3Etme/+pnyq4yWbFbbuG4v2mFcIXlvIGqoE91wCr/wPw9xGLJuroaZpT6Dm3a1PLSYiSyanwWqwfJm0l2vJku5OG9fFWobOXuW0XOLqino8lQKMtXUn+pBWgfljdKUoP1Rmv6x2JShQrOmWTiqT/WBIHVT+ZDrxNekrKPPR4ifdRUlo7cfbesTykT08f7LwOX8EqJrV/iegVQgtiMStrGA59n4ux5eBSvG+Q338T2Tp3SF2BuhEZcplDYP4Yd8WzTAMx5u0/DV4Mq0p+kQffiOxmLLCMax8FM/JYQzqwZuU"
+            address_transaction_ID:"fbe142c4-4631-4a4e-b077-4f6ed8547667",
+            chain_id:"9e7f0b28-5e1f-4f40-8f6f-c9b082886eca",
+            from:"",
+            to:"b204b03395647b7df320f19f6854fb2a1d6840eb",
+            value:1000,
+            pub_key:String(Buffer.from(process.env.PUB_KEY as string).toString("base64")),
+            signature:"M3gVP19pjlZsCyElpOOxPOA7fX8iZqUzyqBNpFSro/SjBB9F4/7miQ9r3ozSP5LPmk88balRkERFoQ7PqNL485r5LfmqeCDko1rbViu3sjTcElY+nxMXDleeiLa61w4SQvSR1SA0M/cqBttftHJy1L/LAuR0KDxKtDBIWHVa3QE0dJYPKey/IWOFszqRH2Ho3g96mexkEjgJntvSAMI3AFpF4ksQQoPs86dPEMYO6S1QNO7+OBDgwkCkw6jT7Yf53zjxToJXkQMfs55SN8NBMQGr27GjpBvpobwAQjtERz2ngerQ3sO0hthVKGFpFhWfywNXmH3vBUMpcSyZ0Jo/vorvDotvFJwHngwIrlhHF6EmxK2LzxukJ6ikEE3Wd4FQALGt8Zpnj3UMOvjOlZtSBMmOkjdah8ci/Jc3gGTEyWfprgPjxRITzQSqY6C8Jyydy6ARyFjYXH/udHGR4XjW8A9SVV3InrOWJGZw5xNRfI9hsnpaguYf03Gf2hLXL/Mu"
         }
     ],
-    before_block_hash:"000134dae6ce42451ac0cf2e657199857995f4e4c9f9b707691b6850f5285f83",
+    before_block_hash:"",
 }
 const text = JSON.stringify(befo)
 

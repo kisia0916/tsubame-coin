@@ -9,9 +9,9 @@ export const count_token = (tsubame_address:string)=>{
         now_chain[main_chain_index].data.forEach((i)=>{
             i.transactions.forEach((n)=>{
                 if (n.from === tsubame_address){
-                    token_counter-=n.fee
+                    token_counter-=n.value
                 }else if (n.to === tsubame_address){
-                    token_counter+=n.fee
+                    token_counter+=n.value
                 }
             })
         })

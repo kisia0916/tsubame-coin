@@ -14,19 +14,10 @@ export const add_new_block = (chain_id:string,data:block_data_interface,block_st
         const target_chain:chain_data_interface = now_chain[target_chain_index]
         //データ内のトランザクションの有効性の確認
         for (let m:number = 0;data.transactions.length>m;m++){
-            const {signature,...transaction_data} = data.transactions[m]
-            const transaction_hash_value = get_hash(JSON.stringify(transaction_data))
-            const is_true_transaction = check_transaction(transaction_data.from,transaction_hash_value,signature)
-            if (transaction_data.block_num !== data.block_num || transaction_data.transaction_num !== m || is_true_transaction === false){
+            const is_true_transaction = check_transaction(false,data.transactions[m])
+            if (!is_true_transaction){
                 console.log("verify error")
                 return 0
-            }else{
-                const rest_token = count_token(data.transactions[m].from)
-                //UTXOを確認
-                if (rest_token < data.transactions[m].fee){
-                    console.log("verify error")
-                    return 0
-                }
             }
         }
         console.log("all transaction is true")

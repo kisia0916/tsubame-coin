@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { block_data_interface } from "./interfaces/block_data_interface";
+import { block_data_interface, block_head } from "./interfaces/block_data_interface";
 import { transactions_data_interface } from "./interfaces/transaction_data_interface";
 import {Server,Socket} from "socket.io"
 import { io, NodeWebSocket } from "socket.io-client"
@@ -79,9 +79,13 @@ export const delete_works_difference = (now_diff**2)*1
 export let now_longest_chain:string = ""
 export let now_block_reward = 300
 export const block_transaction_capacity = 10
+export let now_block_template:block_head|undefined = undefined
 //functions
 export const init_chain = ()=>{
     now_chain = []
+}
+export const set_block_template = (new_template:block_head|undefined)=>{
+    now_block_template = new_template
 }
 export const get_hash = (data:string):string=>{
     const hash = createHash("sha256")

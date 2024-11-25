@@ -34,7 +34,7 @@ router.get("/get_mining_target",async(req:any,res:any)=>{
 
 router.post("/add_new_block",async(req:any,res:any)=>{
     try{
-        await add_new_block(get_now_main_chain().chain_id,req.body.nance,true)
+        await add_new_block(get_now_main_chain().chain_id,req.body.nance,true)//ここ第二引数間違ってる
         return res.status(200).json({data:"sended"})
     }catch{
         return res.status(500).json({error:"server error"})

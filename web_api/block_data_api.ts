@@ -2,6 +2,7 @@ import express from "express";
 import { get_now_main_chain } from "../functions/logic/count_all_diff";
 import { block_transaction_capacity, get_hash, now_block_template, now_chain, now_diff, set_block_template, transaction_pool } from "../main";
 import { add_new_block } from "../functions/logic/add_new_block";
+import { block_data_interface } from "../interfaces/block_data_interface";
 const router = express.Router()
 
 router.get("/get_mining_target",async(req:any,res:any)=>{
@@ -39,7 +40,9 @@ router.get("/get_mining_target",async(req:any,res:any)=>{
 
 router.post("/add_new_block",async(req:any,res:any)=>{
     try{
-        await add_new_block(get_now_main_chain().chain_id,req.body.nance,true)//ここ第二引数間違ってる
+        let add_block = now_block_template as block_data_interface
+        add_block.nance = req.body.nance
+        await add_new_block(get_now_main_chain().chain_id,add_block,true)//ここ第二引数間違ってる
         set_block_template(undefined)
         return res.status(200).json({data:"sended"})
     }catch{
